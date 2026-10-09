@@ -133,9 +133,16 @@ Lab05 — Хичээлд бүртгүүлэх API (F.CSA313)
  55. result = ERROR_PREREQUISITES
  56. missing = ['CS202']
 
-❏ 10. Нэмэлт: нийтийн API (jsonplaceholder /users)
+❏ 10. Буруу JSON (формат эвдэрсэн) → 400 ERROR_BAD_JSON
+↳ POST /registrations (эвдэрсэн JSON)
+  POST http://localhost:3000/registrations [errored]
+     connect ECONNREFUSED 127.0.0.1:3000
+ 58. Статус 400 байна
+ 59. result = ERROR_BAD_JSON
+
+❏ 11. Нэмэлт: нийтийн API (jsonplaceholder /users)
 ↳ GET https://jsonplaceholder.typicode.com/users
-  GET https://jsonplaceholder.typicode.com/users [200 OK, 6.61kB, 594ms]
+  GET https://jsonplaceholder.typicode.com/users [200 OK, 6.6kB, 537ms]
   ✓  Статус 200 байна
   ✓  Хариу массив байна
   ✓  Эхний хэрэглэгчийн нэр Leanne Graham
@@ -145,19 +152,19 @@ Lab05 — Хичээлд бүртгүүлэх API (F.CSA313)
 ├─────────────────────────┼────────────────────┼────────────────────┤
 │              iterations │                  1 │                  0 │
 ├─────────────────────────┼────────────────────┼────────────────────┤
-│                requests │                 23 │                 22 │
+│                requests │                 24 │                 23 │
 ├─────────────────────────┼────────────────────┼────────────────────┤
-│            test-scripts │                 23 │                  0 │
+│            test-scripts │                 24 │                  0 │
 ├─────────────────────────┼────────────────────┼────────────────────┤
 │      prerequest-scripts │                  0 │                  0 │
 ├─────────────────────────┼────────────────────┼────────────────────┤
-│              assertions │                 37 │                 34 │
+│              assertions │                 39 │                 36 │
 ├─────────────────────────┴────────────────────┴────────────────────┤
-│ total run duration: 834ms                                         │
+│ total run duration: 793ms                                         │
 ├───────────────────────────────────────────────────────────────────┤
 │ total data received: 5.65kB (approx)                              │
 ├───────────────────────────────────────────────────────────────────┤
-│ average response time: 25ms [min: 594ms, max: 594ms, s.d.: 121ms] │
+│ average response time: 22ms [min: 537ms, max: 537ms, s.d.: 107ms] │
 └───────────────────────────────────────────────────────────────────┘
 
 [31m   # [39m[31m failure        [39m[31m detail                                                                                                                [39m
@@ -441,3 +448,18 @@ Lab05 — Хичээлд бүртгүүлэх API (F.CSA313)
                       "undefined" is not valid JSON                                                                                         
                       at assertion:2 in test-script                                                                                         
                       inside "9. Зарим урьдач нөхцөл дутуу → missing зөвхөн дутууг жагсаана / POST /registrations"                          
+[90m     [39m[90m                [39m[90m                                                                                                                       [39m
+ 57.  Error                                                                                                                                 
+                      connect ECONNREFUSED 127.0.0.1:3000                                                                                   
+                      at request                                                                                                            
+                      inside ""                                                                                                             
+[90m     [39m[90m                [39m[90m                                                                                                                       [39m
+ 58.  AssertionError  Статус 400 байна                                                                                                      
+                      expected PostmanResponse{ …(5) } to have property 'code'                                                              
+                      at assertion:0 in test-script                                                                                         
+                      inside "10. Буруу JSON (формат эвдэрсэн) → 400 ERROR_BAD_JSON / POST /registrations (эвдэрсэн JSON)"                  
+[90m     [39m[90m                [39m[90m                                                                                                                       [39m
+ 59.  JSONError       result = ERROR_BAD_JSON                                                                                               
+                      "undefined" is not valid JSON                                                                                         
+                      at assertion:1 in test-script                                                                                         
+                      inside "10. Буруу JSON (формат эвдэрсэн) → 400 ERROR_BAD_JSON / POST /registrations (эвдэрсэн JSON)"                  

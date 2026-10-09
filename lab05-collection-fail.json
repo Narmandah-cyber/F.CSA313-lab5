@@ -1046,7 +1046,58 @@
       ]
     },
     {
-      "name": "10. Нэмэлт: нийтийн API (jsonplaceholder /users)",
+      "name": "10. Буруу JSON (формат эвдэрсэн) → 400 ERROR_BAD_JSON",
+      "item": [
+        {
+          "name": "POST /registrations (эвдэрсэн JSON)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 400 байна\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"result = ERROR_BAD_JSON\", function () {",
+                  "    pm.expect(pm.response.json().result).to.eql(\"ERROR_BAD_JSON\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentID\":\"B231234567\",\"courseID\":",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/registrations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "registrations"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Нэмэлт: нийтийн API (jsonplaceholder /users)",
       "item": [
         {
           "name": "GET https://jsonplaceholder.typicode.com/users",

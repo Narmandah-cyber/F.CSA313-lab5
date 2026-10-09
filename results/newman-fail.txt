@@ -4,7 +4,7 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
 
 ❏ 1. Happy path — идэвхтэй оюутан, урьдач нөхцөл хангасан → 201 OK
 ↳ Setup: PUT /students/B231234567
-  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 14ms]
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 11ms]
   ✓  Setup: оюутан үүссэн (200)
 
 ↳ Setup: PUT /courses/CS313
@@ -12,7 +12,7 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
   ✓  Setup: хичээл үүссэн (200)
 
 ↳ POST /registrations
-  POST http://localhost:3000/registrations [201 Created, 202B, 0µs]
+  POST http://localhost:3000/registrations [201 Created, 202B, 1ms]
   1. Статус 200 байна (ЗОРИУД БУРУУ — үнэндээ 201 ирнэ)
   ✓  result = OK
   ✓  registrationID нь тоо байна (яг утгыг нь шалгахгүй)
@@ -23,7 +23,7 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
   ✓  Setup: хичээл үүссэн (200)
 
 ↳ POST /registrations
-  POST http://localhost:3000/registrations [200 OK, 192B, 1ms]
+  POST http://localhost:3000/registrations [200 OK, 192B, 0µs]
   ✓  Статус 200 байна
   ✓  result = ERROR_NO_STUDENT
 
@@ -43,17 +43,17 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
 
 ❏ 4. Хичээл байхгүй → ERROR_NO_COURSE
 ↳ Setup: PUT /students/B231234567
-  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 1ms]
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 0µs]
   ✓  Setup: оюутан үүссэн (200)
 
 ↳ POST /registrations
-  POST http://localhost:3000/registrations [200 OK, 191B, 0µs]
+  POST http://localhost:3000/registrations [200 OK, 191B, 1ms]
   ✓  Статус 200 байна
   ✓  result = ERROR_NO_COURSE
 
 ❏ 5. Урьдач нөхцөл огт үзээгүй → ERROR_PREREQUISITES
 ↳ Setup: PUT /students/B900000002
-  PUT http://localhost:3000/students/B900000002 [200 OK, 178B, 1ms]
+  PUT http://localhost:3000/students/B900000002 [200 OK, 178B, 0µs]
   ✓  Setup: оюутан үүссэн (200)
 
 ↳ Setup: PUT /courses/CS400
@@ -68,7 +68,7 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
 
 ❏ 6. courseID талбар дутуу → 400 ERROR_BAD_REQUEST
 ↳ POST /registrations (courseID-гүй)
-  POST http://localhost:3000/registrations [400 Bad Request, 202B, 0µs]
+  POST http://localhost:3000/registrations [400 Bad Request, 202B, 1ms]
   ✓  Статус 400 байна
   ✓  result = ERROR_BAD_REQUEST
 
@@ -78,7 +78,7 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
   ✓  Setup: оюутан үүссэн (200)
 
 ↳ POST /registrations
-  POST http://localhost:3000/registrations [200 OK, 198B, 1ms]
+  POST http://localhost:3000/registrations [200 OK, 198B, 0µs]
   ✓  Статус 200 байна
   ✓  result = ERROR_INACTIVE_STUDENT
 
@@ -88,7 +88,7 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
   ✓  Setup: оюутан үүссэн (200)
 
 ↳ Setup: PUT /courses/FREE101
-  PUT http://localhost:3000/courses/FREE101 [200 OK, 178B, 0µs]
+  PUT http://localhost:3000/courses/FREE101 [200 OK, 178B, 1ms]
   ✓  Setup: хичээл үүссэн (200)
 
 ↳ POST /registrations
@@ -98,22 +98,28 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
 
 ❏ 9. Зарим урьдач нөхцөл дутуу → missing зөвхөн дутууг жагсаана
 ↳ Setup: PUT /students/B900000005
-  PUT http://localhost:3000/students/B900000005 [200 OK, 178B, 0µs]
+  PUT http://localhost:3000/students/B900000005 [200 OK, 178B, 1ms]
   ✓  Setup: оюутан үүссэн (200)
 
 ↳ Setup: PUT /courses/CS500
-  PUT http://localhost:3000/courses/CS500 [200 OK, 178B, 1ms]
+  PUT http://localhost:3000/courses/CS500 [200 OK, 178B, 0µs]
   ✓  Setup: хичээл үүссэн (200)
 
 ↳ POST /registrations
-  POST http://localhost:3000/registrations [200 OK, 215B, 0µs]
+  POST http://localhost:3000/registrations [200 OK, 215B, 1ms]
   ✓  Статус 200 байна
   ✓  result = ERROR_PREREQUISITES
   ✓  missing = ['CS202']
 
-❏ 10. Нэмэлт: нийтийн API (jsonplaceholder /users)
+❏ 10. Буруу JSON (формат эвдэрсэн) → 400 ERROR_BAD_JSON
+↳ POST /registrations (эвдэрсэн JSON)
+  POST http://localhost:3000/registrations [400 Bad Request, 199B, 1ms]
+  ✓  Статус 400 байна
+  ✓  result = ERROR_BAD_JSON
+
+❏ 11. Нэмэлт: нийтийн API (jsonplaceholder /users)
 ↳ GET https://jsonplaceholder.typicode.com/users
-  GET https://jsonplaceholder.typicode.com/users [200 OK, 6.6kB, 615ms]
+  GET https://jsonplaceholder.typicode.com/users [200 OK, 6.6kB, 560ms]
   ✓  Статус 200 байна
   ✓  Хариу массив байна
   ✓  Эхний хэрэглэгчийн нэр Leanne Graham
@@ -123,19 +129,19 @@ Lab05 — FAIL хувилбар (зориуд буруу oracle)
 ├─────────────────────────┼───────────────────┼───────────────────┤
 │              iterations │                 1 │                 0 │
 ├─────────────────────────┼───────────────────┼───────────────────┤
-│                requests │                23 │                 0 │
+│                requests │                24 │                 0 │
 ├─────────────────────────┼───────────────────┼───────────────────┤
-│            test-scripts │                23 │                 0 │
+│            test-scripts │                24 │                 0 │
 ├─────────────────────────┼───────────────────┼───────────────────┤
 │      prerequest-scripts │                 0 │                 0 │
 ├─────────────────────────┼───────────────────┼───────────────────┤
-│              assertions │                37 │                 1 │
+│              assertions │                39 │                 1 │
 ├─────────────────────────┴───────────────────┴───────────────────┤
-│ total run duration: 855ms                                       │
+│ total run duration: 817ms                                       │
 ├─────────────────────────────────────────────────────────────────┤
-│ total data received: 6.17kB (approx)                            │
+│ total data received: 6.2kB (approx)                             │
 ├─────────────────────────────────────────────────────────────────┤
-│ average response time: 29ms [min: 1ms, max: 615ms, s.d.: 124ms] │
+│ average response time: 25ms [min: 1ms, max: 560ms, s.d.: 111ms] │
 └─────────────────────────────────────────────────────────────────┘
 
 [31m  # [39m[31m failure        [39m[31m detail                                                                                          [39m
