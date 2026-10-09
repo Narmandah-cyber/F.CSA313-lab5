@@ -1,0 +1,146 @@
+newman
+
+Lab05 — FAIL хувилбар (зориуд буруу oracle)
+
+❏ 1. Happy path — идэвхтэй оюутан, урьдач нөхцөл хангасан → 201 OK
+↳ Setup: PUT /students/B231234567
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 14ms]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ Setup: PUT /courses/CS313
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 1ms]
+  ✓  Setup: хичээл үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [201 Created, 202B, 0µs]
+  1. Статус 200 байна (ЗОРИУД БУРУУ — үнэндээ 201 ирнэ)
+  ✓  result = OK
+  ✓  registrationID нь тоо байна (яг утгыг нь шалгахгүй)
+
+❏ 2. Оюутан байхгүй → ERROR_NO_STUDENT
+↳ Setup: PUT /courses/CS313
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 1ms]
+  ✓  Setup: хичээл үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [200 OK, 192B, 1ms]
+  ✓  Статус 200 байна
+  ✓  result = ERROR_NO_STUDENT
+
+❏ 3. Идэвхгүй оюутан → ERROR_INACTIVE_STUDENT
+↳ Setup: PUT /students/B900000001
+  PUT http://localhost:3000/students/B900000001 [200 OK, 178B, 1ms]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ Setup: PUT /courses/CS313
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 0µs]
+  ✓  Setup: хичээл үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [200 OK, 198B, 1ms]
+  ✓  Статус 200 байна
+  ✓  result = ERROR_INACTIVE_STUDENT
+
+❏ 4. Хичээл байхгүй → ERROR_NO_COURSE
+↳ Setup: PUT /students/B231234567
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 1ms]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [200 OK, 191B, 0µs]
+  ✓  Статус 200 байна
+  ✓  result = ERROR_NO_COURSE
+
+❏ 5. Урьдач нөхцөл огт үзээгүй → ERROR_PREREQUISITES
+↳ Setup: PUT /students/B900000002
+  PUT http://localhost:3000/students/B900000002 [200 OK, 178B, 1ms]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ Setup: PUT /courses/CS400
+  PUT http://localhost:3000/courses/CS400 [200 OK, 178B, 0µs]
+  ✓  Setup: хичээл үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [200 OK, 215B, 0µs]
+  ✓  Статус 200 байна
+  ✓  result = ERROR_PREREQUISITES
+  ✓  missing = ['CS201']
+
+❏ 6. courseID талбар дутуу → 400 ERROR_BAD_REQUEST
+↳ POST /registrations (courseID-гүй)
+  POST http://localhost:3000/registrations [400 Bad Request, 202B, 0µs]
+  ✓  Статус 400 байна
+  ✓  result = ERROR_BAD_REQUEST
+
+❏ 7. Давхар алдаа: идэвхгүй оюутан + байхгүй хичээл → ERROR_INACTIVE_STUDENT
+↳ Setup: PUT /students/B900000003
+  PUT http://localhost:3000/students/B900000003 [200 OK, 178B, 1ms]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [200 OK, 198B, 1ms]
+  ✓  Статус 200 байна
+  ✓  result = ERROR_INACTIVE_STUDENT
+
+❏ 8. Хязгаар: урьдач нөхцөлгүй хичээл, хоосон coursesTaken → 201 OK
+↳ Setup: PUT /students/B900000004
+  PUT http://localhost:3000/students/B900000004 [200 OK, 178B, 1ms]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ Setup: PUT /courses/FREE101
+  PUT http://localhost:3000/courses/FREE101 [200 OK, 178B, 0µs]
+  ✓  Setup: хичээл үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [201 Created, 202B, 1ms]
+  ✓  Статус 201 байна
+  ✓  result = OK
+
+❏ 9. Зарим урьдач нөхцөл дутуу → missing зөвхөн дутууг жагсаана
+↳ Setup: PUT /students/B900000005
+  PUT http://localhost:3000/students/B900000005 [200 OK, 178B, 0µs]
+  ✓  Setup: оюутан үүссэн (200)
+
+↳ Setup: PUT /courses/CS500
+  PUT http://localhost:3000/courses/CS500 [200 OK, 178B, 1ms]
+  ✓  Setup: хичээл үүссэн (200)
+
+↳ POST /registrations
+  POST http://localhost:3000/registrations [200 OK, 215B, 0µs]
+  ✓  Статус 200 байна
+  ✓  result = ERROR_PREREQUISITES
+  ✓  missing = ['CS202']
+
+❏ 10. Нэмэлт: нийтийн API (jsonplaceholder /users)
+↳ GET https://jsonplaceholder.typicode.com/users
+  GET https://jsonplaceholder.typicode.com/users [200 OK, 6.6kB, 615ms]
+  ✓  Статус 200 байна
+  ✓  Хариу массив байна
+  ✓  Эхний хэрэглэгчийн нэр Leanne Graham
+
+┌─────────────────────────┬───────────────────┬───────────────────┐
+│                         │          executed │            failed │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              iterations │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│                requests │                23 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│            test-scripts │                23 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│      prerequest-scripts │                 0 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              assertions │                37 │                 1 │
+├─────────────────────────┴───────────────────┴───────────────────┤
+│ total run duration: 855ms                                       │
+├─────────────────────────────────────────────────────────────────┤
+│ total data received: 6.17kB (approx)                            │
+├─────────────────────────────────────────────────────────────────┤
+│ average response time: 29ms [min: 1ms, max: 615ms, s.d.: 124ms] │
+└─────────────────────────────────────────────────────────────────┘
+
+[31m  # [39m[31m failure        [39m[31m detail                                                                                          [39m
+[90m    [39m[90m                [39m[90m                                                                                                 [39m
+ 1.  AssertionError  Статус 200 байна (ЗОРИУД БУРУУ — үнэндээ 201 ирнэ)                                              
+                     expected response to have status code 200 but got 201                                           
+                     at assertion:0 in test-script                                                                   
+                     inside "1. Happy path — идэвхтэй оюутан, урьдач нөхцөл хангасан → 201 OK / POST /registrations" 
